@@ -1,0 +1,47 @@
+﻿<Window x:Class="Lottery_v2.View.AddCustomerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lottery_v2.ViewModel"
+        mc:Ignorable="d"
+        Title="AddCustomerView" Height="350" Width="400">
+    <Window.Resources>
+        <local:AddCustomerViewModel x:Key="cavm"></local:AddCustomerViewModel>
+    </Window.Resources>
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button>ADD</Button>
+                <Button Click="Button_Click">EXIT</Button>
+            </StackPanel>
+        </Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="1">NAME</Label>
+            <TextBox Grid.Row="1" Grid.Column="1"></TextBox>
+            <Label Grid.Row="2">AGENCY</Label>
+            <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+            <Label Grid.Row="3">ADDRESS</Label>
+            <TextBox Grid.Row="3" Grid.Column="1"></TextBox>
+            <Label Grid.Row="4">MOBILE</Label>
+            <TextBox Grid.Row="4" Grid.Column="1"></TextBox>
+            <Label Grid.Row="5">JOININ DATE</Label>
+            <DatePicker Grid.Row="5" Grid.Column="1"></DatePicker>
+            <Label Grid.Row="6">DUE</Label>
+            <TextBox Grid.Row="6" Grid.Column="1"></TextBox>
+        </Grid>
+    </DockPanel>
+</Window>

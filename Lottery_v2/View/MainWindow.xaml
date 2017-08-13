@@ -1,0 +1,157 @@
+﻿<Window x:Class="Lottery_v2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lottery_v2"
+        xmlns:localViewModel="clr-namespace:Lottery_v2.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="419.698" Width="704.225">
+    <Window.Resources>
+        <localViewModel:MainWindowProductViewModel x:Key="vmProduct"></localViewModel:MainWindowProductViewModel>
+        <localViewModel:MainWindowCustomerViewModel x:Key="vmCustomer"></localViewModel:MainWindowCustomerViewModel>
+        <Style TargetType="TabItem">
+            <Setter Property="TextElement.Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="Border" Background="Transparent" Padding="20,5">
+                            <ContentPresenter x:Name="ContentSite" 
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"
+                                              ContentSource="Header"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#062543"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True" SourceName="Border">
+                                <Setter TargetName="Border" Property="Background" Value="#103458" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Background="#084b8a">
+        <TabControl TabStripPlacement="Left" SelectedIndex="2">
+            <TabItem Header="SATHI AGENCY">
+                
+            </TabItem>
+            <TabItem Header="SALE">
+                
+            </TabItem>
+            <TabItem Header="CUSTOMER">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Border>
+                        <Label>CUSTOMER</Label>
+                    </Border>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <Border>
+                            <ListView
+                                ItemsSource="{Binding CustomerList, Source={StaticResource vmCustomer}}"
+                                SelectedIndex="{Binding CustomerIndex, Source={StaticResource vmCustomer}}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="120"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="2*"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Label Content="{Binding Path=Name}"></Label>
+                                                    <Label Grid.Row="1" Content="{Binding Path=Agency}"></Label>
+                                                </Grid>
+                                                <Grid Grid.Column="1">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="2*"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Label>Rs.</Label>
+                                                    <Label Grid.Row="1" 
+                                                        Content="{Binding Path=PreviousDue}">
+                                                    </Label>
+                                                    <Label Grid.Row="2">DUE</Label>
+                                                </Grid>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Border>
+                        <Border Grid.Column="2">
+                            <StackPanel Orientation="Vertical">
+                                <Button>ADD</Button>
+                                <Button>EDIT</Button>
+                                <Button>DELETE</Button>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="PRODUCT">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Border>
+                            <ListView 
+                                ItemsSource="{Binding ProductList, Source={StaticResource vmProduct}}"
+                                SelectedIndex="{Binding ProductIndex, Source={StaticResource vmProduct}}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border>
+                                            <StackPanel Orientation="Vertical">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Path=Name}"></TextBlock>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Path=Type}"></TextBlock>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Path=Rate}"></TextBlock>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Border>
+                        <StackPanel Orientation="Vertical" Grid.Column="2">
+                            <Button Command="{Binding AddBtnClickedCommand, Source={StaticResource vmProduct}}">ADD NEW</Button>
+                            <Button Command="{Binding EditBtnClickedCommand, Source={StaticResource vmProduct}}">EDIT</Button>
+                            <Button Command="{Binding DeleteBtnClickedCommand, Source={StaticResource vmProduct}}">DELETE</Button>
+                        </StackPanel>
+                        
+                    </Grid>
+                    <Border Background="DarkTurquoise" Margin="-3" Padding="10">
+                        <Label>PRODUCTS</Label>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
