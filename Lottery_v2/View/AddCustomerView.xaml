@@ -4,15 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lottery_v2.ViewModel"
+        xmlns:conv="clr-namespace:Lottery_v2.ViewModel.Converters"
         mc:Ignorable="d"
-        Title="AddCustomerView" Height="350" Width="400">
+        Title="AddCustomerView" Height="350" Width="400" WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <local:AddCustomerViewModel x:Key="cavm"></local:AddCustomerViewModel>
+        <conv:DecimalConverter x:Key="DecimalConverter"></conv:DecimalConverter>
     </Window.Resources>
     <DockPanel LastChildFill="True">
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button>ADD</Button>
+                <Button Command="{Binding AddCustCommand, Source={StaticResource cavm}}">ADD</Button>
                 <Button Click="Button_Click">EXIT</Button>
             </StackPanel>
         </Border>
@@ -31,17 +33,23 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="1">NAME</Label>
-            <TextBox Grid.Row="1" Grid.Column="1"></TextBox>
+            <TextBox Grid.Row="1" Grid.Column="1"
+                     Text="{Binding CName, Source={StaticResource cavm}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <Label Grid.Row="2">AGENCY</Label>
-            <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+            <TextBox Grid.Row="2" Grid.Column="1"
+                     Text="{Binding Agency, Source={StaticResource cavm}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <Label Grid.Row="3">ADDRESS</Label>
-            <TextBox Grid.Row="3" Grid.Column="1"></TextBox>
+            <TextBox Grid.Row="3" Grid.Column="1"
+                     Text="{Binding Address, Source={StaticResource cavm}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <Label Grid.Row="4">MOBILE</Label>
-            <TextBox Grid.Row="4" Grid.Column="1"></TextBox>
+            <TextBox Grid.Row="4" Grid.Column="1"
+                     Text="{Binding Mobile, Source={StaticResource cavm}, Mode=TwoWay}"></TextBox>
             <Label Grid.Row="5">JOININ DATE</Label>
-            <DatePicker Grid.Row="5" Grid.Column="1"></DatePicker>
+            <DatePicker Grid.Row="5" Grid.Column="1"
+                        Text="{Binding JoiningDate, Source={StaticResource cavm}}"></DatePicker>
             <Label Grid.Row="6">DUE</Label>
-            <TextBox Grid.Row="6" Grid.Column="1"></TextBox>
+            <TextBox Grid.Row="6" Grid.Column="1"
+                     Text="{Binding PrevDue, Source={StaticResource cavm}, Converter={StaticResource DecimalConverter}}"></TextBox>
         </Grid>
     </DockPanel>
 </Window>

@@ -97,7 +97,7 @@
                         </Border>
                         <Border Grid.Column="2">
                             <StackPanel Orientation="Vertical">
-                                <Button>ADD</Button>
+                                <Button Command="{Binding AddCustCommand, Source={StaticResource vmCustomer}}">ADD</Button>
                                 <Button>EDIT</Button>
                                 <Button>DELETE</Button>
                             </StackPanel>

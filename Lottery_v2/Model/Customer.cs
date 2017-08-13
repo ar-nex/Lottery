@@ -13,16 +13,16 @@ namespace Lottery_v2.Model
         public string Id { get { return this._id; } set { this._id = value; this.OnPropertyChanged("Id"); } }
 
         private string _name;
-        public string Name { get { return this._name; } set { this._name = value.ToUpper(); this.OnPropertyChanged("Name"); } }
+        public string Name { get { return this._name; } set { this._name = value; this.OnPropertyChanged("Name"); } }
 
         private string _agency;
-        public string Agency { get { return this._agency; } set { this._agency = value.ToUpper(); this.OnPropertyChanged("Agency"); } }
+        public string Agency { get { return this._agency; } set { this._agency = value; this.OnPropertyChanged("Agency"); } }
 
         private string _mobile;
         public string Mobile { get { return this._mobile; } set { this._mobile = value; this.OnPropertyChanged("Mobile"); } }
 
         private string _address;
-        public string Address { get { return this._address; } set { this._address = value.ToUpper(); this.OnPropertyChanged("Address"); } }
+        public string Address { get { return this._address; } set { this._address = value; this.OnPropertyChanged("Address"); } }
 
         private DateTime _joiningDate;
         public DateTime JoiningDate { get { return this._joiningDate; } set { this._joiningDate = value; this.OnPropertyChanged("JoiningDate"); } }

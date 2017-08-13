@@ -16,13 +16,11 @@ namespace Lottery_v2.Model.Database
 
         public void OnProductInsertEvent()
         {
-            if (ProductInsertEvent != null)
-            {
-                ProductInsertEvent(this, EventArgs.Empty);
-            }
+            ProductInsertEvent?.Invoke(this, EventArgs.Empty);
         }
 
-        public int _lastProductId;
+        // public int _lastProductId;
+        private int _lastProductId;
 
         public Product GetLastInsertedProduct()
         {

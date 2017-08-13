@@ -90,6 +90,7 @@
     <Compile Include="Model\Database\CustomerDb.cs" />
     <Compile Include="Model\Database\ProductDb.cs" />
     <Compile Include="Model\EventReferencer.cs" />
+    <Compile Include="Model\EventReferencerCustomer.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="ViewModel\AddCustomerViewModel.cs" />
     <Compile Include="ViewModel\AddProductViewModel.cs" />

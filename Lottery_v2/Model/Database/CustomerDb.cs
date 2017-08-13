@@ -13,6 +13,53 @@ namespace Lottery_v2.Model.Database
 
         }
 
+        public event EventHandler CustomerInsertEvent;
+        public void OnCustomerInsertEvent()
+        {
+            CustomerInsertEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        private int _lastCustomerId;
+
+        public Customer GetLastInsertedCustomer()
+        {
+            Customer c = new Customer();
+            if (_lastCustomerId > 0)
+            {
+                try
+                {
+                    this.conn.Open();
+                    string sql = "SELECT c.id, c.name, c.agency, c.address, c.mobile, c.joining_date, d.amount FROM customer c INNER JOIN current_due d ON d.customer_id = c.id WHERE c.id = " + _lastCustomerId;
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    if (rdr.Read())
+                    {
+                        c.Id = rdr[0].ToString();
+                        c.Name = rdr[1].ToString();
+                        c.Agency = rdr[2].ToString();
+                        c.Address = rdr[3].ToString();
+                        c.Mobile = rdr[4].ToString();
+                        c.JoiningDate = (string.IsNullOrEmpty(rdr[5].ToString())) ? default(DateTime) : DateTime.Parse(rdr[5].ToString());
+                        c.PreviousDue = Convert.ToDecimal(rdr[6]);
+                        _lastCustomerId = 0;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show("DB.LastInsertedProduct. : " + ex.Message);
+                }
+                finally
+                {
+                    this.conn.Close();
+                }
+            }
+            else
+            {
+                c.Id = "0";
+            }
+            return c;
+        }
+
         public List<Customer> GetCustomerList()
         {
             List<Customer> clist = new List<Customer>();
@@ -74,6 +121,7 @@ namespace Lottery_v2.Model.Database
                     cmd.ExecuteNonQuery();
                     long entry_id = cmd.LastInsertedId;
                     insertedId = (int)entry_id;
+                    _lastCustomerId = insertedId;
 
                     string sql_due = "INSERT INTO current_due(amount, customer_id) VALUES (" + due + ", " + insertedId + ")";
                     cmd.CommandText = sql_due;
@@ -87,6 +135,7 @@ namespace Lottery_v2.Model.Database
                     {
                         myTrans.Rollback();
                         insertedId = 0;
+                        _lastCustomerId = 0;
                     }
                     catch (Exception e221)
                     {
@@ -105,7 +154,10 @@ namespace Lottery_v2.Model.Database
             {
                 this.conn.Close();
             }
-
+            if (insertedId > 0)
+            {
+                OnCustomerInsertEvent();
+            }
             return insertedId;
         
         }
