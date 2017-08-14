@@ -59,6 +59,24 @@
     <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\WPFToolkit.dll</HintPath>
     </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -70,6 +88,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AddProductView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EditCustomerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -92,20 +114,27 @@
     <Compile Include="Model\EventReferencer.cs" />
     <Compile Include="Model\EventReferencerCustomer.cs" />
     <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\SoldItem.cs" />
     <Compile Include="ViewModel\AddCustomerViewModel.cs" />
     <Compile Include="ViewModel\AddProductViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\Commands\RelayCommand.cs" />
+    <Compile Include="ViewModel\Converters\DateConverter.cs" />
     <Compile Include="ViewModel\Converters\DecimalConverter.cs" />
+    <Compile Include="ViewModel\EditCustomerViewModel.cs" />
     <Compile Include="ViewModel\EditProductViewModel.cs" />
     <Compile Include="ViewModel\MainWindowCustomerViewModel.cs" />
     <Compile Include="ViewModel\MainWindowProductViewModel.cs" />
+    <Compile Include="ViewModel\MainWindowSaleViewModel.cs" />
     <Compile Include="ViewModel\ProductViewModel.cs" />
     <Compile Include="View\AddCustomerView.xaml.cs">
       <DependentUpon>AddCustomerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\AddProductView.xaml.cs">
       <DependentUpon>AddProductView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EditCustomerView.xaml.cs">
+      <DependentUpon>EditCustomerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EditProductView.xaml.cs">
       <DependentUpon>EditProductView.xaml</DependentUpon>

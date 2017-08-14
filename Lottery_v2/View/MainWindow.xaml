@@ -10,6 +10,7 @@
     <Window.Resources>
         <localViewModel:MainWindowProductViewModel x:Key="vmProduct"></localViewModel:MainWindowProductViewModel>
         <localViewModel:MainWindowCustomerViewModel x:Key="vmCustomer"></localViewModel:MainWindowCustomerViewModel>
+        <localViewModel:MainWindowSaleViewModel x:Key="vmSale"></localViewModel:MainWindowSaleViewModel>
         <Style TargetType="TabItem">
             <Setter Property="TextElement.Foreground" Value="White"/>
             <Setter Property="Template">
@@ -35,12 +36,23 @@
         </Style>
     </Window.Resources>
     <Grid Background="#084b8a">
-        <TabControl TabStripPlacement="Left" SelectedIndex="2">
+        <TabControl TabStripPlacement="Left" SelectedIndex="1">
             <TabItem Header="SATHI AGENCY">
                 
             </TabItem>
             <TabItem Header="SALE">
-                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid Grid.Row="1" AutoGenerateColumns="True"
+                              ItemsSource="{Binding SoldItemList, Source={StaticResource vmSale}}">
+                    </DataGrid>
+                </Grid>
             </TabItem>
             <TabItem Header="CUSTOMER">
                 <Grid>
@@ -98,7 +110,7 @@
                         <Border Grid.Column="2">
                             <StackPanel Orientation="Vertical">
                                 <Button Command="{Binding AddCustCommand, Source={StaticResource vmCustomer}}">ADD</Button>
-                                <Button>EDIT</Button>
+                                <Button Command="{Binding EditCustCommand, Source={StaticResource vmCustomer}}">EDIT</Button>
                                 <Button>DELETE</Button>
                             </StackPanel>
                         </Border>

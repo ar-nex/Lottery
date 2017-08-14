@@ -1,0 +1,71 @@
+﻿<Window x:Class="Lottery_v2.View.EditCustomerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        xmlns:local="clr-namespace:Lottery_v2.ViewModel"
+        xmlns:conv="clr-namespace:Lottery_v2.ViewModel.Converters"
+        mc:Ignorable="d"
+        Title="EditCustomerView" Height="350" Width="400" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <local:EditCustomerViewModel x:Key="cevm"></local:EditCustomerViewModel>
+        <conv:DecimalConverter x:Key="DecimalConverter"></conv:DecimalConverter>
+        <conv:DateConverter x:Key="DateConverter"></conv:DateConverter>
+        <!--<Style TargetType="{x:Type DatePickerTextBox}">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <TextBox x:Name="PART_TextBox"
+     Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', 
+     RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
+    </Window.Resources>
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Command="{Binding UpdateCustCommand, Source={StaticResource cevm}}">UPDATE</Button>
+                <Button Click="Button_Click">EXIT</Button>
+            </StackPanel>
+        </Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="1">NAME</Label>
+            <TextBox Grid.Row="1" Grid.Column="1"
+                     Text="{Binding CName, Source={StaticResource cevm}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <Label Grid.Row="2">AGENCY</Label>
+            <TextBox Grid.Row="2" Grid.Column="1"
+                     Text="{Binding Agency, Source={StaticResource cevm}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <Label Grid.Row="3">ADDRESS</Label>
+            <TextBox Grid.Row="3" Grid.Column="1"
+                     Text="{Binding Address, Source={StaticResource cevm}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <Label Grid.Row="4">MOBILE</Label>
+            <TextBox Grid.Row="4" Grid.Column="1"
+                     Text="{Binding Mobile, Source={StaticResource cevm}, Mode=TwoWay}"></TextBox>
+            <Label Grid.Row="5">JOININ DATE</Label>
+            <DatePicker Grid.Row="5" Grid.Column="1"
+                        Text="{Binding JoiningDate, Source={StaticResource cevm}, Mode=TwoWay, Converter={StaticResource DateConverter}}"></DatePicker>
+            <!--<xctk:DateTimePicker Grid.Row="5" Grid.Column="1" Format="ShortDate" 
+                                 Value="{Binding JoiningDate, Source={StaticResource cevm}, Mode=TwoWay}" IsReadOnly="True">
+            </xctk:DateTimePicker>-->
+            <Label Grid.Row="6">DUE</Label>
+            <TextBox Grid.Row="6" Grid.Column="1"
+                     Text="{Binding PrevDue, Source={StaticResource cevm}, Converter={StaticResource DecimalConverter}}"></TextBox>
+        </Grid>
+    </DockPanel>
+</Window>

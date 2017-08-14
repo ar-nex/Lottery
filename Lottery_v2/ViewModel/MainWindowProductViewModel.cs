@@ -85,7 +85,7 @@ namespace Lottery_v2.ViewModel
 
         private void addBtnClicked()
         {
-            Lottery_v2.View.AddProductView apv = new View.AddProductView();
+            View.AddProductView apv = new View.AddProductView();
             apv.Owner = Application.Current.MainWindow;
             apv.ShowDialog();
         }

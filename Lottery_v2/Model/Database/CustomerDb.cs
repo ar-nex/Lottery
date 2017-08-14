@@ -103,7 +103,7 @@ namespace Lottery_v2.Model.Database
             string agency = (string.IsNullOrEmpty(c.Agency)) ? "NULL" : "'" + c.Agency + "'";
             string address = (string.IsNullOrEmpty(c.Address)) ? "NULL" : "'" + c.Address + "'";
             string mobile = (string.IsNullOrEmpty(c.Mobile)) ? "NULL" : "'" + c.Mobile + "'";
-            string joiningDate = (DateTime.Compare(c.JoiningDate, default(DateTime)) == 0) ? "NULL" : c.JoiningDate.ToString("yyyy-MM-dd") ;
+            string joiningDate = (DateTime.Compare(c.JoiningDate, default(DateTime)) == 0) ? "NULL" : "'" + c.JoiningDate.ToString("yyyy-MM-dd") + "'";
             string due = (c.PreviousDue > 0) ? c.PreviousDue.ToString("#.##") : "0";
 
             try
@@ -169,7 +169,7 @@ namespace Lottery_v2.Model.Database
             string agency = (string.IsNullOrEmpty(c.Agency)) ? "NULL" : "'" + c.Agency + "'";
             string address = (string.IsNullOrEmpty(c.Address)) ? "NULL" : "'" + c.Address + "'";
             string mobile = (string.IsNullOrEmpty(c.Mobile)) ? "NULL" : "'" + c.Mobile + "'";
-            string joiningDate = (DateTime.Compare(c.JoiningDate, default(DateTime)) == 0) ? "NULL" : c.JoiningDate.ToString("yyyy-MM-dd");
+            string joiningDate = (DateTime.Compare(c.JoiningDate, default(DateTime)) == 0) ? "NULL" : "'" + c.JoiningDate.ToString("yyyy-MM-dd") + "'";
             
             try
             {

@@ -72,6 +72,8 @@ namespace Lottery_v2.ViewModel
             cdb = new CustomerDb();
             EventReferencerCustomer.AddReference("custEntry", cdb);
             CustomerList = new ObservableCollection<Customer>(cdb.GetCustomerList());
+            CustomerIndex = -1;
+            SelectedCustomer = new Customer();
 
             AddCustCommand = new RelayCommand(addCustBtnClicked, canClickAddCutBtn);
             EditCustCommand = new RelayCommand(editCustBtnClicked, canClickEditCustBtn);
@@ -93,12 +95,14 @@ namespace Lottery_v2.ViewModel
 
         private void editCustBtnClicked()
         {
-
+            View.EditCustomerView ecv = new View.EditCustomerView();
+            ecv.Owner = Application.Current.MainWindow;
+            ecv.ShowDialog();
         }
 
         private bool canClickEditCustBtn()
         {
-            return false;
+            return (CustomerIndex > -1 && CustomerIndex < CustomerList.Count);
         }
 
         private void deleteCustBtnClicked()
