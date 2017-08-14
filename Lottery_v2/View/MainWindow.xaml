@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Lottery_v2"
         xmlns:localViewModel="clr-namespace:Lottery_v2.ViewModel"
+        xmlns:tk="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+        xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
         Title="MainWindow" Height="419.698" Width="704.225">
     <Window.Resources>
@@ -34,6 +35,18 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <DataTemplate x:Key="autoCustBox">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding Name}"/>
+                <Label Content="{Binding Agency}" Foreground="DarkGray"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="autoProdBox">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding Name}"/>
+                <Label Content="{Binding Type}" Foreground="DarkGray"/>
+            </StackPanel>
+        </DataTemplate>
     </Window.Resources>
     <Grid Background="#084b8a">
         <TabControl TabStripPlacement="Left" SelectedIndex="1">
@@ -45,13 +58,90 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
                     </Grid.RowDefinitions>
-
-                    <DataGrid Grid.Row="1" AutoGenerateColumns="True"
-                              ItemsSource="{Binding SoldItemList, Source={StaticResource vmSale}}">
-                    </DataGrid>
+                    <Border Background="Azure" Padding="10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <Label>CUSTOMER</Label>
+                                    <tk:AutoCompleteBox Width="200"
+                                                        ItemsSource="{Binding CustomerList, Source={StaticResource vmCustomer}}"
+                                                        ValueMemberPath="Name"
+                                                        SelectedItem="{Binding SelecSaleCustomer, Source={StaticResource vmCustomer}, Mode=TwoWay}"
+                                                        ItemTemplate="{StaticResource autoCustBox}"
+                                                        FilterMode="Contains">
+                                    </tk:AutoCompleteBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <Label>ID :</Label>
+                                    <Label Content="{Binding SaleCustId, Source={StaticResource vmCustomer}}"/>
+                                    <Label>AGENCY:</Label>
+                                    <Label Content="{Binding SaleCustAgency,Source={StaticResource vmCustomer}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Vertical">
+                                <Label>PREVIOUS DUE</Label>
+                                <Label Content="{Binding SelecCustDue, Source={StaticResource vmCustomer}}"></Label>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Grid.Column="2">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <Label>DATE :</Label>
+                                    <Label></Label>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <!--<Label>BILL ID</Label>
+                                <TextBox></TextBox>-->
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Label>PRODUCT</Label>
+                                <tk:AutoCompleteBox Width="200"
+                                                    ItemsSource="{Binding ProductList, Source={StaticResource vmProduct}}"
+                                                    ValueMemberPath="Name"
+                                                    SelectedItem="{Binding SelecProduct, Source={StaticResource vmProduct}, Mode=TwoWay}"
+                                                    ItemTemplate="{StaticResource autoProdBox}"
+                                                    FilterMode="Contains">
+                                </tk:AutoCompleteBox>
+                                <Label>TYPE : </Label>
+                                <Label Content="{Binding SelecType, Source={StaticResource vmProduct}}"></Label>
+                                <Label>RATE</Label>
+                                <Label Content="{Binding SelecRate, Source={StaticResource vmProduct}}"></Label>
+                                <Label>AMOUNT</Label>
+                                <Label Content="{Binding SelecAmount, Source={StaticResource vmProduct}}"></Label>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Label>QUANTITY</Label>
+                                <xctk:IntegerUpDown 
+                                    Value="{Binding SelecProdQnt, Source={StaticResource vmProduct}}">
+                                </xctk:IntegerUpDown>
+                                <Slider Width="300" Minimum="0" Maximum="2000" TickFrequency="200" TickPlacement="TopLeft"
+                                        Value="{Binding SelecProdQnt, Source={StaticResource vmProduct}}">
+                                </Slider>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="CUSTOMER">
