@@ -28,70 +28,6 @@ namespace Lottery_v2.ViewModel
             }
         }
 
-        private Product _selecProduct;
-        public Product SelecProduct
-        {
-            get => _selecProduct;
-            set
-            {
-                _selecProduct = value;
-                OnPropertyChanged("SelecProduct");
-                updateSelecProdDetails();
-            }
-        }
-
-        private string _selecType;
-        public string SelecType
-        {
-            get => _selecType;
-            set
-            {
-                _selecType = value;
-                OnPropertyChanged("SelecType");
-            }
-        }
-
-        private decimal _selecRate;
-        public decimal SelecRate
-        {
-            get => _selecRate;
-            set
-            {
-                _selecRate = value;
-                OnPropertyChanged("SelecRate");
-            }
-        }
-
-        private int _selecProdQnt;
-        public int SelecProdQnt
-        {
-            get => _selecProdQnt;
-            set
-            {
-                if (value >= 0)
-                {
-                    _selecProdQnt = value;
-                    SelecAmount = SelecRate * value;
-                }
-                else
-                {
-                    _selecProdQnt = 0;
-                }
-                OnPropertyChanged("SelecProdQnt");
-            }
-        }
-
-        private decimal _selecAmount;
-        public decimal SelecAmount
-        {
-            get => _selecAmount;
-            set
-            {
-                _selecAmount = value;
-                OnPropertyChanged("SelecAmount");
-            }
-        }
-
 
         private int _productIndex;
         public int ProductIndex
@@ -123,7 +59,7 @@ namespace Lottery_v2.ViewModel
             set => _seletectedProduct = value;
         }
 
-        public ProductDb Pdb { get; set; }
+        public ProductDb pdb { get; set; }
         public RelayCommand AddBtnClickedCommand { get; set; }
         public RelayCommand EditBtnClickedCommand { get; set; }
         public RelayCommand DeleteBtnClickedCommand { get; set; }
@@ -133,10 +69,11 @@ namespace Lottery_v2.ViewModel
 
         #region method
         private void startUpInitializer()
-        {         
-            ProductDb Pdb = new ProductDb();
-            EventReferencer.AddReference("prodEntry", Pdb);
-            ProductList = new ObservableCollection<Product>(Pdb.GetProductList());
+        {
+            //ProductDb pdb = new ProductDb();
+            //EventReferencer.AddReference("prodEntry", pdb);
+            pdb = EventReferencer.GetReference("prodEntry");
+            ProductList = new ObservableCollection<Product>(pdb.GetProductList());
             ProductIndex = -1;
             SelectedProduct = new Product();
 
@@ -144,7 +81,7 @@ namespace Lottery_v2.ViewModel
             EditBtnClickedCommand = new RelayCommand(editBtnClicked, canClickEditBtn);
             DeleteBtnClickedCommand = new RelayCommand(deleteBtnClicked, canClickDeleteBtn);
 
-            Pdb.ProductInsertEvent += UpdateProductList;
+            pdb.ProductInsertEvent += UpdateProductList;
             
         }
 
@@ -202,20 +139,7 @@ namespace Lottery_v2.ViewModel
             }
         }
 
-        private void updateSelecProdDetails()
-        {
-            if (SelecProduct != null && ProductList.IndexOf(SelecProduct) != -1)
-            {
-                SelecType = SelecProduct.Type;
-                SelecRate = SelecProduct.Rate;
-            }
-            else
-            {
-                SelecType = string.Empty;
-                SelecRate = 0;
-            }
-            SelecAmount = SelecRate * SelecProdQnt;
-        }
+       
         #endregion
     }
 }

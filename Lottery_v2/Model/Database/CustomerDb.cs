@@ -41,7 +41,7 @@ namespace Lottery_v2.Model.Database
                         c.Mobile = rdr[4].ToString();
                         c.JoiningDate = (string.IsNullOrEmpty(rdr[5].ToString())) ? default(DateTime) : DateTime.Parse(rdr[5].ToString());
                         c.PreviousDue = Convert.ToDecimal(rdr[6]);
-                        _lastCustomerId = 0;
+                       // _lastCustomerId = 0;
                     }
                 }
                 catch (Exception ex)

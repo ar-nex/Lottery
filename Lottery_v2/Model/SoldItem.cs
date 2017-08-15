@@ -5,24 +5,43 @@ using System.Text;
 
 namespace Lottery_v2.Model
 {
-    public class SoldItem
+    public class SoldItem : ViewModel.BaseViewModel
     {
-        public string ProductName { get; set; }
-        public string ProductType { get; set; }
-        public int Quantity { get; set; }
-        public decimal Rate { get; set; }
-
         public SoldItem()
+            : base()
         {
 
         }
 
-        public SoldItem(string pname, string ptype, int quant, decimal rt)
+        public string ProductName { get; set; }
+        public string ProductType { get; set; }
+        private int _quantity;
+        public int Quantity
         {
-            ProductName = pname;
-            ProductType = ptype;
-            Quantity = quant;
-            Rate = rt;
+            get => _quantity;
+            set
+            {
+                if (value < 0)
+                {
+                    _quantity = 0;
+                }
+                else
+                {
+                    _quantity = value;
+                }
+                OnPropertyChanged("Quantity");
+            }
+        }
+        public decimal Rate { get; set; }
+        private decimal _amount;
+        public decimal Amount
+        {
+            get => _amount;
+            set
+            {
+                _amount = value;
+                OnPropertyChanged("Amount");
+            }
         }
     }
 }

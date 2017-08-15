@@ -28,50 +28,7 @@ namespace Lottery_v2.ViewModel
             }
         }
 
-        private Customer _selecSaleCustomer;
-        public Customer SelecSaleCustomer
-        {
-            get => _selecSaleCustomer;
-            set
-            {
-                _selecSaleCustomer = value;
-                OnPropertyChanged("SelecSaleCustomer");
-                updateSaleCustDetail();
-            }
-        }
-
-        private string _saleCustId;
-        public string SaleCustId
-        {
-            get => _saleCustId;
-            set
-            {
-                _saleCustId = value;
-                OnPropertyChanged("SaleCustId");
-            }
-        }
-
-        private string _saleCustAgency;
-        public string SaleCustAgency
-        {
-            get => _saleCustAgency;
-            set
-            {
-                _saleCustAgency = value;
-                OnPropertyChanged("SaleCustAgency");
-            }
-        }
-
-        private decimal _selecCustDue;
-        public decimal SelecCustDue
-        {
-            get => _selecCustDue;
-            set
-            {
-                _selecCustDue = value;
-                OnPropertyChanged("SelecCustDue");
-            }
-        }
+        
 
         private int _customerIndex;
         public int CustomerIndex
@@ -114,8 +71,9 @@ namespace Lottery_v2.ViewModel
         #region Methods
         private void startUpInitializer()
         {
-            cdb = new CustomerDb();
-            EventReferencerCustomer.AddReference("custEntry", cdb);
+            //cdb = new CustomerDb();
+            //EventReferencerCustomer.AddReference("custEntry", cdb);
+            cdb = EventReferencerCustomer.GetReference("custEntry");
             CustomerList = new ObservableCollection<Customer>(cdb.GetCustomerList());
             CustomerIndex = -1;
             SelectedCustomer = new Customer();
@@ -170,21 +128,7 @@ namespace Lottery_v2.ViewModel
             }
         }
 
-        private void updateSaleCustDetail()
-        {
-            if (SelecSaleCustomer != null && CustomerList.IndexOf(SelecSaleCustomer) != -1)
-            {
-                SaleCustId = SelecSaleCustomer.Id;
-                SaleCustAgency = SelecSaleCustomer.Agency;
-                SelecCustDue = SelecSaleCustomer.PreviousDue;
-            }
-            else
-            {
-                SaleCustId = string.Empty;
-                SaleCustAgency = string.Empty;
-                SelecCustDue = 0;
-            }
-        }
+       
         #endregion
     }
 }

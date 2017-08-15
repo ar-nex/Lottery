@@ -119,6 +119,7 @@
     <Compile Include="ViewModel\AddProductViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\Commands\RelayCommand.cs" />
+    <Compile Include="ViewModel\Commands\RelayCommandWithParam.cs" />
     <Compile Include="ViewModel\Converters\DateConverter.cs" />
     <Compile Include="ViewModel\Converters\DecimalConverter.cs" />
     <Compile Include="ViewModel\EditCustomerViewModel.cs" />

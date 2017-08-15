@@ -41,7 +41,7 @@ namespace Lottery_v2.Model.Database
                         p.Rate = Convert.ToDecimal(rdr[3]);
                         p.LastUpdated = DateTime.Parse(rdr[4].ToString());
                         // reset lastinserted id;
-                        _lastProductId = 0;
+                       // _lastProductId = 0;
                     }
                 }
                 catch (Exception)

@@ -7,11 +7,11 @@
         xmlns:tk="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
         xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
-        Title="MainWindow" Height="419.698" Width="704.225">
+        Title="MainWindow" Height="537.52" Width="764.225">
     <Window.Resources>
+        <localViewModel:MainWindowSaleViewModel x:Key="vmSale"></localViewModel:MainWindowSaleViewModel>
         <localViewModel:MainWindowProductViewModel x:Key="vmProduct"></localViewModel:MainWindowProductViewModel>
         <localViewModel:MainWindowCustomerViewModel x:Key="vmCustomer"></localViewModel:MainWindowCustomerViewModel>
-        <localViewModel:MainWindowSaleViewModel x:Key="vmSale"></localViewModel:MainWindowSaleViewModel>
         <Style TargetType="TabItem">
             <Setter Property="TextElement.Foreground" Value="White"/>
             <Setter Property="Template">
@@ -59,6 +59,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition />
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Border Background="Azure" Padding="10">
                         <Grid>
@@ -71,23 +72,23 @@
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                     <Label>CUSTOMER</Label>
                                     <tk:AutoCompleteBox Width="200"
-                                                        ItemsSource="{Binding CustomerList, Source={StaticResource vmCustomer}}"
+                                                        ItemsSource="{Binding CustomerList, Source={StaticResource vmSale}}"
                                                         ValueMemberPath="Name"
-                                                        SelectedItem="{Binding SelecSaleCustomer, Source={StaticResource vmCustomer}, Mode=TwoWay}"
+                                                        SelectedItem="{Binding SelecSaleCustomer, Source={StaticResource vmSale}, Mode=TwoWay}"
                                                         ItemTemplate="{StaticResource autoCustBox}"
                                                         FilterMode="Contains">
                                     </tk:AutoCompleteBox>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                     <Label>ID :</Label>
-                                    <Label Content="{Binding SaleCustId, Source={StaticResource vmCustomer}}"/>
+                                    <Label Content="{Binding SaleCustId, Source={StaticResource vmSale}}"/>
                                     <Label>AGENCY:</Label>
-                                    <Label Content="{Binding SaleCustAgency,Source={StaticResource vmCustomer}}"/>
+                                    <Label Content="{Binding SaleCustAgency,Source={StaticResource vmSale}}"/>
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Orientation="Vertical">
                                 <Label>PREVIOUS DUE</Label>
-                                <Label Content="{Binding SelecCustDue, Source={StaticResource vmCustomer}}"></Label>
+                                <Label Content="{Binding SelecCustDue, Source={StaticResource vmSale}}"></Label>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Grid.Column="2">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -106,42 +107,132 @@
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                 <Label>PRODUCT</Label>
                                 <tk:AutoCompleteBox Width="200"
-                                                    ItemsSource="{Binding ProductList, Source={StaticResource vmProduct}}"
+                                                    ItemsSource="{Binding ProductList, Source={StaticResource vmSale}}"
                                                     ValueMemberPath="Name"
-                                                    SelectedItem="{Binding SelecProduct, Source={StaticResource vmProduct}, Mode=TwoWay}"
+                                                    SelectedItem="{Binding SelecProduct, Source={StaticResource vmSale}, Mode=TwoWay}"
                                                     ItemTemplate="{StaticResource autoProdBox}"
                                                     FilterMode="Contains">
                                 </tk:AutoCompleteBox>
                                 <Label>TYPE : </Label>
-                                <Label Content="{Binding SelecType, Source={StaticResource vmProduct}}"></Label>
+                                <Label Content="{Binding SelecType, Source={StaticResource vmSale}}"></Label>
                                 <Label>RATE</Label>
-                                <Label Content="{Binding SelecRate, Source={StaticResource vmProduct}}"></Label>
+                                <Label Content="{Binding SelecRate, Source={StaticResource vmSale}}"></Label>
                                 <Label>AMOUNT</Label>
-                                <Label Content="{Binding SelecAmount, Source={StaticResource vmProduct}}"></Label>
+                                <Label Content="{Binding SelecAmount, Source={StaticResource vmSale}}"></Label>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                 <Label>QUANTITY</Label>
-                                <xctk:IntegerUpDown 
-                                    Value="{Binding SelecProdQnt, Source={StaticResource vmProduct}}">
+                                <xctk:IntegerUpDown
+                                    Value="{Binding SelecProdQnt, Source={StaticResource vmSale}}">
                                 </xctk:IntegerUpDown>
                                 <Slider Width="300" Minimum="0" Maximum="2000" TickFrequency="200" TickPlacement="TopLeft"
-                                        Value="{Binding SelecProdQnt, Source={StaticResource vmProduct}}">
+                                        Value="{Binding SelecProdQnt, Source={StaticResource vmSale}}">
                                 </Slider>
+                                <Button Command="{Binding AddSoldItemCommand, Source={StaticResource vmSale}}">ADD</Button>
                             </StackPanel>
                         </StackPanel>
                     </Border>
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1.5*"/>
                             <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
+                            <DataGrid AutoGenerateColumns="False" IsReadOnly="True"
+                                ItemsSource="{Binding SoldItemList, Source={StaticResource vmSale}}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="PRODUCT" Binding="{Binding Path=ProductName}"/>
+                                    <DataGridTextColumn Header="TYPE" Binding="{Binding Path=ProductType}"/>
+                                    <DataGridTextColumn Header="RATE" Binding="{Binding Path=Rate}"/>
+                                    <DataGridTextColumn Header="QUANTITY" Binding="{Binding Path=Quantity}"/>
+                                    <DataGridTextColumn Header="AMOUNT" Binding="{Binding Path=Amount}"/>
+                                    <DataGridTemplateColumn Header="CANCEL">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{Binding RemoveSoldItemCommand, Source={StaticResource vmSale}}" CommandParameter="{Binding}">X</Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Border Grid.Row="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <Label>TOTAL ITEMS :</Label>
+                                        <Label Content="{Binding TotalItems,Source={StaticResource vmSale}}"></Label>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label>TOTAL AMOUNT</Label>
+                                        <Label Content="{Binding TotalAmount, Source={StaticResource vmSale}}"></Label>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
                         </Grid>
+                        <GroupBox Grid.Column="1" Header="PAYMENT" Foreground="DarkGreen" Margin="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Label>TOTAL AMOUNT WITH DUE</Label>
+                                <Label Grid.Column="1" Content="{Binding TotalAmountWithDue, Source={StaticResource vmSale}}"></Label>
+                                <Label Grid.Row="2" Content="CASH PAYMENT"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Width="50" 
+                                         Text="{Binding CashPayment, Source={StaticResource vmSale}, Mode=TwoWay}"/>
+                                <Label Grid.Row="3" Content="PT"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" 
+                                         Text="{Binding PtPayment, Source={StaticResource vmSale}, Mode=TwoWay}"/>
+                                <Label Grid.Row="4" Content="BONUS"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" 
+                                         Text="{Binding BonusPayment, Source={StaticResource vmSale}, Mode=TwoWay}"/>
+                                <Label Grid.Row="5">TOTAL PAYMENT</Label>
+                                <Label Grid.Row="5" Grid.Column="1" 
+                                       Content="{Binding TotalPayment, Source={StaticResource vmSale}}"/>
+                            </Grid>
+                        </GroupBox>
                     </Grid>
+                    <Border Grid.Row="3">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <Label Content="{Binding FinalBalanceLbl,Source={StaticResource vmSale}}"/>
+                                    <Label Content="{Binding FinalBalanceAmount, Source={StaticResource vmSale}}"/>
+                                    <Label Content="{Binding FinalBalanceDetail, Source={StaticResource vmSale}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding ReturnVisibility, Source={StaticResource vmSale}}">
+                                    <Label Content="AMOUNT RETURNED"/>
+                                    <TextBox Width="60" Text="{Binding ReturnAmount, Source={StaticResource vmSale}}"/>
+                                    <CheckBox Content="FULL" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding ReturnVisibility, Source={StaticResource vmSale}}">
+                                    <Label>Amount will be saved as credit</Label>
+                                </StackPanel>
+                            </StackPanel>
+                            <Button Grid.Column="1">
+                                COMMIT TRANSACTION
+                            </Button>
+                        </Grid>
+                    </Border>
                 </Grid>
             </TabItem>
             <TabItem Header="CUSTOMER">
