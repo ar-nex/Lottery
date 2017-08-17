@@ -192,7 +192,8 @@ namespace Lottery_v2.ViewModel
             get => _totalAmountWithDue;
             set
             {
-                _totalAmountWithDue = value;
+                decimal vl = decimal.Round(value, 0);
+                _totalAmountWithDue = vl;
                 OnPropertyChanged("TotalAmountWithDue");
             }
         }
@@ -205,7 +206,7 @@ namespace Lottery_v2.ViewModel
             {
                 _cashPayment = (value >= 0) ? value : 0;
                 OnPropertyChanged("CashPayment");
-
+                CalculateTotalPayment();
             }
         }
 
@@ -217,6 +218,7 @@ namespace Lottery_v2.ViewModel
             {
                 _ptPayment = (value >= 0) ? value : 0;
                 OnPropertyChanged("PtPayment");
+                CalculateTotalPayment();
             }
         }
 
@@ -228,6 +230,7 @@ namespace Lottery_v2.ViewModel
             {
                 _bonusPayment = (value >= 0) ? value : 0;
                 OnPropertyChanged("BonusPayment");
+                CalculateTotalPayment();
             }
         }
 
@@ -254,14 +257,14 @@ namespace Lottery_v2.ViewModel
             }
         }
 
-        private string _finalBalanceDetail;
-        public string FinalBalanceDetail
+        private string _finalMsg;
+        public string FinalMsg
         {
-            get => _finalBalanceDetail;
+            get => _finalMsg;
             set
             {
-                _finalBalanceDetail = value;
-                OnPropertyChanged("FinalBalanceDetail");
+                _finalMsg = value;
+                OnPropertyChanged("finalMsg");
             }
         }
 
@@ -282,8 +285,20 @@ namespace Lottery_v2.ViewModel
             get => _returnAmount;
             set
             {
-                _returnAmount = value;
+                _returnAmount = (value > FinalBalanceAmount || value < 0) ? 0 : value;
                 OnPropertyChanged("ReturnAmount");
+                RemainingAfterReturn = FinalBalanceAmount - _returnAmount;
+            }
+        }
+
+        private decimal _dueAfterPayment;
+        public decimal DueAfterPayment
+        {
+            get => _dueAfterPayment;
+            set
+            {
+                _dueAfterPayment = value;
+                OnPropertyChanged("DueAfterPayment");
             }
         }
 
@@ -331,9 +346,9 @@ namespace Lottery_v2.ViewModel
             ProductList = new ObservableCollection<Product>(pdb.GetProductList());
             pdb.ProductInsertEvent += Pdb_ProductInsertEvent;
 
-            FinalBalanceLbl = "FINAL BALANCE";
+            FinalBalanceLbl = "CHANGE";
             FinalBalanceAmount = 0;
-            FinalBalanceDetail = string.Empty;
+            FinalMsg = string.Empty;
 
             ReturnVisibility = Visibility.Hidden;
 
@@ -371,12 +386,14 @@ namespace Lottery_v2.ViewModel
                 SaleCustId = SelecSaleCustomer.Id;
                 SaleCustAgency = SelecSaleCustomer.Agency;
                 SelecCustDue = SelecSaleCustomer.PreviousDue;
+                TotalAmountWithDue = SelecSaleCustomer.PreviousDue + TotalAmount;
             }
             else
             {
                 SaleCustId = string.Empty;
                 SaleCustAgency = string.Empty;
                 SelecCustDue = 0;
+                TotalAmountWithDue = SelecCustDue + TotalAmount;
             }
         }
 
@@ -406,7 +423,7 @@ namespace Lottery_v2.ViewModel
             // insert into collection
             SoldItemList.Add(sitem);
             // update total amount and items.
-            UpdateTotalItemAmount();
+            UpdateTotalItemAmountDue();
             // Reset the box
             SelecProduct = new Product();
             SelecProdQnt = 0;
@@ -424,7 +441,7 @@ namespace Lottery_v2.ViewModel
             if (index > -1 && index < SoldItemList.Count)
             {
                 SoldItemList.RemoveAt(index);
-                UpdateTotalItemAmount();
+                UpdateTotalItemAmountDue();
             }
         }
 
@@ -433,40 +450,50 @@ namespace Lottery_v2.ViewModel
             return true;
         }
 
-        private void UpdateTotalItemAmount()
+        private void UpdateTotalItemAmountDue()
         {
             TotalItems = SoldItemList.Sum(x => x.Quantity);
             TotalAmount = SoldItemList.Sum(x => x.Amount);
+            TotalAmountWithDue = SelecCustDue + TotalAmount;
         }
 
-        private void UpdatePaymentInfo()
+        private void CalculateTotalPayment()
         {
-            TotalAmountWithDue = SelecSaleCustomer.PreviousDue + TotalAmount;
             TotalPayment = CashPayment + PtPayment + BonusPayment;
+        }
 
+        private void UpdateXchangeInfo()
+        {
             FinalBalanceAmount = TotalPayment - TotalAmountWithDue;
             if (FinalBalanceAmount == 0)
             {
-                FinalBalanceLbl = "CHANGE";
-                FinalBalanceDetail = string.Empty;
+                FinalMsg = string.Empty;
+                ReturnVisibility = Visibility.Hidden;
             }
             else if (FinalBalanceAmount < 0)
             {
-                FinalBalanceLbl = "CHANGE";
-                FinalBalanceDetail = "This amount will be saved as due";
+                FinalMsg = "Rs. "+ (-FinalBalanceAmount).ToString()+" will be saved as due";
+                ReturnVisibility = Visibility.Hidden;
             }
             else
             {
                 ReturnVisibility = Visibility.Visible;
-                FinalBalanceLbl = "CHANGE";
-                FinalBalanceDetail = "This amount should be returned.";
             }
-
         }
 
         private void UpdateReturnInfo()
         {
             
+        }
+
+        private void CommitTransaction()
+        {
+
+        }
+
+        private bool CanCommitTransaction()
+        {
+            return false;
         }
 
         #endregion

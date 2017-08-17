@@ -111,9 +111,12 @@
     <Compile Include="Model\Database\BaseDb.cs" />
     <Compile Include="Model\Database\CustomerDb.cs" />
     <Compile Include="Model\Database\ProductDb.cs" />
+    <Compile Include="Model\Database\SaleDb.cs" />
     <Compile Include="Model\EventReferencer.cs" />
     <Compile Include="Model\EventReferencerCustomer.cs" />
+    <Compile Include="Model\EventReferencerSale.cs" />
     <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\Sale.cs" />
     <Compile Include="Model\SoldItem.cs" />
     <Compile Include="ViewModel\AddCustomerViewModel.cs" />
     <Compile Include="ViewModel\AddProductViewModel.cs" />

@@ -95,7 +95,6 @@ namespace Lottery_v2.Model.Database
             return clist;
         }
 
-
         public int AddCustomer(Customer c)
         {
             int insertedId = 0;

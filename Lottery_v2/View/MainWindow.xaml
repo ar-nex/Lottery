@@ -6,12 +6,14 @@
         xmlns:localViewModel="clr-namespace:Lottery_v2.ViewModel"
         xmlns:tk="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
         xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        xmlns:conv="clr-namespace:Lottery_v2.ViewModel.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="537.52" Width="764.225">
     <Window.Resources>
         <localViewModel:MainWindowSaleViewModel x:Key="vmSale"></localViewModel:MainWindowSaleViewModel>
         <localViewModel:MainWindowProductViewModel x:Key="vmProduct"></localViewModel:MainWindowProductViewModel>
         <localViewModel:MainWindowCustomerViewModel x:Key="vmCustomer"></localViewModel:MainWindowCustomerViewModel>
+        <conv:DecimalConverter x:Key="DecimalConverter"></conv:DecimalConverter>
         <Style TargetType="TabItem">
             <Setter Property="TextElement.Foreground" Value="White"/>
             <Setter Property="Template">
@@ -194,13 +196,13 @@
                                 <Label Grid.Column="1" Content="{Binding TotalAmountWithDue, Source={StaticResource vmSale}}"></Label>
                                 <Label Grid.Row="2" Content="CASH PAYMENT"/>
                                 <TextBox Grid.Row="2" Grid.Column="1" Width="50" 
-                                         Text="{Binding CashPayment, Source={StaticResource vmSale}, Mode=TwoWay}"/>
+                                         Text="{Binding CashPayment, Source={StaticResource vmSale}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DecimalConverter}}"/>
                                 <Label Grid.Row="3" Content="PT"/>
                                 <TextBox Grid.Row="3" Grid.Column="1" 
-                                         Text="{Binding PtPayment, Source={StaticResource vmSale}, Mode=TwoWay}"/>
+                                         Text="{Binding PtPayment, Source={StaticResource vmSale}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DecimalConverter}}"/>
                                 <Label Grid.Row="4" Content="BONUS"/>
                                 <TextBox Grid.Row="4" Grid.Column="1" 
-                                         Text="{Binding BonusPayment, Source={StaticResource vmSale}, Mode=TwoWay}"/>
+                                         Text="{Binding BonusPayment, Source={StaticResource vmSale}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DecimalConverter}}"/>
                                 <Label Grid.Row="5">TOTAL PAYMENT</Label>
                                 <Label Grid.Row="5" Grid.Column="1" 
                                        Content="{Binding TotalPayment, Source={StaticResource vmSale}}"/>
@@ -214,18 +216,19 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                    <Label Content="{Binding FinalBalanceLbl,Source={StaticResource vmSale}}"/>
-                                    <Label Content="{Binding FinalBalanceAmount, Source={StaticResource vmSale}}"/>
-                                    <Label Content="{Binding FinalBalanceDetail, Source={StaticResource vmSale}}"/>
-                                </StackPanel>
+                                
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding ReturnVisibility, Source={StaticResource vmSale}}">
                                     <Label Content="AMOUNT RETURNED"/>
                                     <TextBox Width="60" Text="{Binding ReturnAmount, Source={StaticResource vmSale}}"/>
                                     <CheckBox Content="FULL" VerticalAlignment="Center"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding ReturnVisibility, Source={StaticResource vmSale}}">
+                                <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding ReturnVisibility, Source={StaticResource vmSale}}">
                                     <Label>Amount will be saved as credit</Label>
+                                </StackPanel>-->
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <!--<Label Content="{Binding FinalBalanceLbl,Source={StaticResource vmSale}}"/>-->
+                                    <Label Content="{Binding FinalBalanceAmount, Source={StaticResource vmSale}}"/>
+                                    <Label Content="{Binding FinalBalanceDetail, Source={StaticResource vmSale}}"/>
                                 </StackPanel>
                             </StackPanel>
                             <Button Grid.Column="1">
