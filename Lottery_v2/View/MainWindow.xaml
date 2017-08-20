@@ -8,7 +8,7 @@
         xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         xmlns:conv="clr-namespace:Lottery_v2.ViewModel.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="537.52" Width="764.225">
+        Title="MainWindow" Height="537.52" Width="800.225">
     <Window.Resources>
         <localViewModel:MainWindowSaleViewModel x:Key="vmSale"></localViewModel:MainWindowSaleViewModel>
         <localViewModel:MainWindowProductViewModel x:Key="vmProduct"></localViewModel:MainWindowProductViewModel>
@@ -19,7 +19,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
-                        <Border Name="Border" Background="Transparent" Padding="20,5">
+                        <Border Name="Border"
+                                BorderBrush="Transparent" BorderThickness="3,0,0,0"
+                                Background="Transparent" Padding="20,5,30,5">
                             <ContentPresenter x:Name="ContentSite" 
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Left"
@@ -27,15 +29,23 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="#062543"/>
+                                <Setter TargetName="Border" Property="Background" Value="#2b5493"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="White"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="3,0,0,0"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True" SourceName="Border">
-                                <Setter TargetName="Border" Property="Background" Value="#103458" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#2b5493"/>
+                                <Setter TargetName="Border" Property="Background" Value="#2b5493"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="TabItemHeader">
+            <Setter Property="Margin" Value="6,0,0,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <DataTemplate x:Key="autoCustBox">
             <StackPanel Orientation="Horizontal">
@@ -50,12 +60,18 @@
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
-    <Grid Background="#084b8a">
+    <Grid Background="#134187">
         <TabControl TabStripPlacement="Left" SelectedIndex="1">
             <TabItem Header="SATHI AGENCY">
                 
             </TabItem>
-            <TabItem Header="SALE">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z" Fill="White" />
+                        <TextBlock Style="{StaticResource TabItemHeader}" Text="SALE"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -130,7 +146,10 @@
                                 <Slider Width="300" Minimum="0" Maximum="2000" TickFrequency="200" TickPlacement="TopLeft"
                                         Value="{Binding SelecProdQnt, Source={StaticResource vmSale}}">
                                 </Slider>
-                                <Button Command="{Binding AddSoldItemCommand, Source={StaticResource vmSale}}">ADD</Button>
+                                <Button Command="{Binding AddSoldItemCommand, Source={StaticResource vmSale}}">
+                                 Add
+                                </Button>
+                              
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -219,16 +238,18 @@
                                 
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding ReturnVisibility, Source={StaticResource vmSale}}">
                                     <Label Content="AMOUNT RETURNED"/>
-                                    <TextBox Width="60" Text="{Binding ReturnAmount, Source={StaticResource vmSale}}"/>
+                                    <TextBox Width="60" Text="{Binding ReturnAmount, Source={StaticResource vmSale}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DecimalConverter}}"/>
                                     <CheckBox Content="FULL" VerticalAlignment="Center"/>
                                 </StackPanel>
                                 <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding ReturnVisibility, Source={StaticResource vmSale}}">
                                     <Label>Amount will be saved as credit</Label>
                                 </StackPanel>-->
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                    <!--<Label Content="{Binding FinalBalanceLbl,Source={StaticResource vmSale}}"/>-->
+                                    <Label>Final Balance Amount: </Label>
                                     <Label Content="{Binding FinalBalanceAmount, Source={StaticResource vmSale}}"/>
-                                    <Label Content="{Binding FinalBalanceDetail, Source={StaticResource vmSale}}"/>
+                                    <Label>Final due :</Label>
+                                    <Label Content="{Binding FinalDue, Source={StaticResource vmSale}}"/>
+                                    <Label Content="{Binding FinalMsg, Source={StaticResource vmSale}}"/>
                                 </StackPanel>
                             </StackPanel>
                             <Button Grid.Column="1">
@@ -238,7 +259,13 @@
                     </Border>
                 </Grid>
             </TabItem>
-            <TabItem Header="CUSTOMER">
+            <TabItem>
+              <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" Fill="White" />
+                        <TextBlock Style="{StaticResource TabItemHeader}">CUSTOMER</TextBlock>
+                    </StackPanel>
+              </TabItem.Header>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -301,7 +328,13 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="PRODUCT">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M2,5H22V20H2V5M20,18V7H4V18H20M17,8A2,2 0 0,0 19,10V15A2,2 0 0,0 17,17H7A2,2 0 0,0 5,15V10A2,2 0 0,0 7,8H17M17,13V12C17,10.9 16.33,10 15.5,10C14.67,10 14,10.9 14,12V13C14,14.1 14.67,15 15.5,15C16.33,15 17,14.1 17,13M15.5,11A0.5,0.5 0 0,1 16,11.5V13.5A0.5,0.5 0 0,1 15.5,14A0.5,0.5 0 0,1 15,13.5V11.5A0.5,0.5 0 0,1 15.5,11M13,13V12C13,10.9 12.33,10 11.5,10C10.67,10 10,10.9 10,12V13C10,14.1 10.67,15 11.5,15C12.33,15 13,14.1 13,13M11.5,11A0.5,0.5 0 0,1 12,11.5V13.5A0.5,0.5 0 0,1 11.5,14A0.5,0.5 0 0,1 11,13.5V11.5A0.5,0.5 0 0,1 11.5,11M8,15H9V10H8L7,10.5V11.5L8,11V15Z" Fill="White" />
+                        <TextBlock Style="{StaticResource TabItemHeader}">PRODUCT</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -309,8 +342,7 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Border>
@@ -319,32 +351,52 @@
                                 SelectedIndex="{Binding ProductIndex, Source={StaticResource vmProduct}}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <Border>
-                                            <StackPanel Orientation="Vertical">
-                                                <StackPanel>
-                                                    <TextBlock Text="{Binding Path=Name}"></TextBlock>
+                                        <Grid>
+                                            <Border Background="#fff">
+                                                <Border.Effect>
+                                                    <DropShadowEffect BlurRadius="5" ShadowDepth=".8" Direction="270" Color="#BBBBBB"/>
+                                                </Border.Effect>
+                                            </Border>
+                                            <Grid Width="400">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="300" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Orientation="Vertical" Margin="8">
+                                                    <TextBlock FontSize="14" Text="{Binding Path=Name}"></TextBlock>
+                                                    <TextBlock FontSize="10" Text="{Binding Path=Type}"></TextBlock>
                                                 </StackPanel>
-                                                <StackPanel>
-                                                    <TextBlock Text="{Binding Path=Type}"></TextBlock>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="1">
+                                                    <Path VerticalAlignment="Center" Data="M8,3H18L17,5H13.74C14.22,5.58 14.58,6.26 14.79,7H18L17,9H15C14.75,11.57 12.74,13.63 10.2,13.96V14H9.5L15.5,21H13L7,14V12H9.5V12C11.26,12 12.72,10.7 12.96,9H7L8,7H12.66C12.1,5.82 10.9,5 9.5,5H7L8,3Z" Fill="Gray" />
+                                                    <TextBlock Margin="5,0" Text="{Binding Path=Rate}" VerticalAlignment="Center"></TextBlock>
                                                 </StackPanel>
-                                                <StackPanel>
-                                                    <TextBlock Text="{Binding Path=Rate}"></TextBlock>
-                                                </StackPanel>
-                                            </StackPanel>
-                                        </Border>
+                                            </Grid>
+                                        </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
                         </Border>
-                        <StackPanel Orientation="Vertical" Grid.Column="2">
-                            <Button Command="{Binding AddBtnClickedCommand, Source={StaticResource vmProduct}}">ADD NEW</Button>
-                            <Button Command="{Binding EditBtnClickedCommand, Source={StaticResource vmProduct}}">EDIT</Button>
-                            <Button Command="{Binding DeleteBtnClickedCommand, Source={StaticResource vmProduct}}">DELETE</Button>
+                        <StackPanel Orientation="Vertical" Grid.Column="2" Margin="5">
+                            <Button Margin="2" Command="{Binding AddBtnClickedCommand, Source={StaticResource vmProduct}}">ADD NEW</Button>
+                            <Button Margin="2" Command="{Binding EditBtnClickedCommand, Source={StaticResource vmProduct}}">EDIT</Button>
+                            <Button Margin="2" Command="{Binding DeleteBtnClickedCommand, Source={StaticResource vmProduct}}">DELETE</Button>
                         </StackPanel>
-                        
+
                     </Grid>
-                    <Border Background="DarkTurquoise" Margin="-3" Padding="10">
-                        <Label>PRODUCTS</Label>
+                    <Border Background="#b1cefb" Margin="-3,-3,-3,10" Padding="10">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="5" ShadowDepth="1.3" Direction="270" Color="#BBBBBB"/>
+                        </Border.Effect>
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Width="48" Height="48">
+                                <Viewbox Width="48" Height="48">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M2,5H22V20H2V5M20,18V7H4V18H20M17,8A2,2 0 0,0 19,10V15A2,2 0 0,0 17,17H7A2,2 0 0,0 5,15V10A2,2 0 0,0 7,8H17M17,13V12C17,10.9 16.33,10 15.5,10C14.67,10 14,10.9 14,12V13C14,14.1 14.67,15 15.5,15C16.33,15 17,14.1 17,13M15.5,11A0.5,0.5 0 0,1 16,11.5V13.5A0.5,0.5 0 0,1 15.5,14A0.5,0.5 0 0,1 15,13.5V11.5A0.5,0.5 0 0,1 15.5,11M13,13V12C13,10.9 12.33,10 11.5,10C10.67,10 10,10.9 10,12V13C10,14.1 10.67,15 11.5,15C12.33,15 13,14.1 13,13M11.5,11A0.5,0.5 0 0,1 12,11.5V13.5A0.5,0.5 0 0,1 11.5,14A0.5,0.5 0 0,1 11,13.5V11.5A0.5,0.5 0 0,1 11.5,11M8,15H9V10H8L7,10.5V11.5L8,11V15Z" Fill="Black" />
+                                    </Canvas>
+                                </Viewbox>
+                            </Viewbox>
+                            <Label VerticalAlignment="Center" FontSize="18">PRODUCTS</Label>
+                        </StackPanel>
                     </Border>
                 </Grid>
             </TabItem>

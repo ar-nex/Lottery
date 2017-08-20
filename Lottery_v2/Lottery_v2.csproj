@@ -107,6 +107,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\CodeFile.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\Database\BaseDb.cs" />
     <Compile Include="Model\Database\CustomerDb.cs" />

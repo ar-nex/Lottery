@@ -29,5 +29,17 @@ namespace Lottery_v2.Model
 
         private decimal _previousDue;
         public decimal PreviousDue { get { return this._previousDue; } set { this._previousDue = value; this.OnPropertyChanged("PreviousDue"); } }
+
+        private DateTime _dueUpdatedOn;
+        public DateTime DueUpdatedOn
+        {
+            get => _dueUpdatedOn;
+            set
+            {
+                DueUpdatedOn = value;
+                OnPropertyChanged("DueUpdatedOn");
+            }
+        }
+
     }
 }
